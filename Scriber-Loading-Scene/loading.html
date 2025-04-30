@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Yükleniyor...</title>
+  <style>
+    /* kısacık kısım icin css kodu yazmaktansa style kısmının icine yazmak daha mantıklı */
+    body {
+      margin: 0;
+      background-color: #ff7200;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #logo {
+      width: 400px;
+      height: 400px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <img id="logo" src="../Scriber-Uı-Images/logo0.png" alt="Loading" />
+
+  <script>
+    const images = [
+      "../Scriber-Uı-Images/logo0.png",
+      "../Scriber-Uı-Images/logo0.png",
+      "../Scriber-Uı-Images/logo1.png",
+      "../Scriber-Uı-Images/logo2.png",
+      "../Scriber-Uı-Images/logo3.png",
+    ];
+
+    let index = 0;
+    const logo = document.getElementById("logo");
+
+    // Görsel animasyonu (0.25 saniyede bir geçiş)
+    const animationInterval = setInterval(() => {
+      index = (index + 1) % images.length;
+      logo.src = images[index];
+    }, 250);
+
+    // 3 saniye sonra deneme.html sayfasına yönlendir
+    setTimeout(() => {
+      clearInterval(animationInterval);
+      window.location.href = "../Scriber-Backend/deneme.html";
+    }, 5000);
+  </script>
+</body>
+</html>
