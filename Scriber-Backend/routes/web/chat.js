@@ -14,7 +14,7 @@ router.get('/all', async (req, res) => {
       .populate('latestMessage')
       .sort({ updatedAt: -1 })
       .exec();
-      console.log(  "chatsList:", chatsList);
+     // console.log(  "chatsList:", chatsList);
     const populatedChats = await chats.populate(chatsList, {
       path: 'latestMessage.sender',
       select: 'name email avatar'

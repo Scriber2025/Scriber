@@ -17,7 +17,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color:  #ff7200;
+  background-color: orange;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -57,7 +57,7 @@ body {
 }
 
 .contact-left h2, .contact-right h2 {
-  color:  #ff7200;
+  color: orange;
   font-size: 2rem;
   margin-bottom: 20px;
 }
@@ -78,7 +78,7 @@ body {
 .contact-form button {
   width: 100%;
   padding: 12px;
-  background-color:  #ff7200;
+  background-color: orange;
   color: white;
   border: none;
   border-radius: 8px;
@@ -87,7 +87,7 @@ body {
 }
 
 .contact-form button:hover {
-  background-color: #ff7200;
+  background-color: #e69500;
 }
 
 .contact-right p {
@@ -96,7 +96,7 @@ body {
 }
 
 .contact-right a {
-  color:  #ff7200;
+  color: orange;
   text-decoration: none;
 }
 
@@ -113,7 +113,7 @@ body {
 }
 
 .contact-info-paragraph a {
-  color:  #ff7200;
+  color: orange;
   text-decoration: none;
 }
 
