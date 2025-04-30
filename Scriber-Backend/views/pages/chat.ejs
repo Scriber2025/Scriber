@@ -140,77 +140,37 @@
   font-size: 1.2rem;
 }
 
-.chat-input {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-}
-#fileInput {
-  display: none;
-}
-/* file-wrapper: ikon ve adı yan yana */
-.file-wrapper {
-  display: flex;
-  align-items: center;
-  min-width: 40px; /* sadece ikon yeri */
-}
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
 
-.file-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-.file-icon:hover {
-  background: rgba(255,255,255,0.2);
-}
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
 
-.file-name {
-  margin-left: 6px;
-  font-size: 0.9rem;
-  color: #eee;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 120px;
-}
-  
-    #messageInput {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.3);
-  color: #fff;
-}
-#messageInput::placeholder {
-  color: #ccc;
-}
+    .chat-input button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
 
-/* gönder butonu */
-#sendBtn {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  background: #28a745;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#sendBtn:hover {
-  background: #218838;
-}
-   
+    .chat-input button:hover {
+      background: #ddd;
+    }
 
     ::placeholder {
-      color: #ffffffb3;
+      color: rgba(255,255,255,0.7);
     }
 
     /* Scrollbar */
@@ -227,15 +187,6 @@
   align-items: center;
   padding: 20px;
 }
-.file-name {
-  flex: 1;
-  font-size: 0.9rem;
-  color: #333;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 
 .spinner {
   width: 40px;
@@ -491,18 +442,6 @@ color: #fff;
     border-radius: 50%;
     object-fit: cover;
   }
-  .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-}
-.modal-content img {
-  max-width: 100%;
-  max-height: 150px;
-}
   </style>
 </head>
 <body>
@@ -556,30 +495,28 @@ color: #fff;
           
       </ul>
     </aside>
-
-    <!-- 
     <div id="newGroupModal">
       <div class="modal-content">
         <h5>Yeni Grup Oluştur</h5>
 
-
+    <!-- 1. Chat Adı -->
     <div class="form-group mt-2">
       <label for="groupName">Grup Adı:</label>
       <input type="text" id="groupName" class="form-control" placeholder="Grup adını girin" />
     </div>
 
-   
+    <!-- 2. Grup Resmi -->
     <div class="form-group mt-2">
       <label for="groupAvatar">Grup Resmi:</label>
       <input type="file" id="groupAvatar" class="form-control" accept="image/*" />
       <img id="groupAvatarPreview" alt="Önizleme" />
     </div>
 
-   
+    <!-- 3. Kullanıcı Listesi -->
     <div class="form-group mt-2">
       <label>Üyeler (birden çok seçebilirsiniz):</label>
       <ul id="groupUserList" style="list-style:none; padding:0; max-height:200px; overflow-y:auto;">
-     
+        <!-- JS ile avatar + checkbox listelenecek -->
       </ul>
     </div>
 
@@ -589,7 +526,7 @@ color: #fff;
     </div>
       </div>
     </div>
-  -->
+  
   
     <!-- SAĞ: Mevcut Sohbet Kutusu -->
     <div class="chat-main-wrapper">
@@ -605,23 +542,9 @@ color: #fff;
             
         </div>
         <div class="chat-input">
-          <div class="file-wrapper">
-            <label for="fileInput" class="file-icon">
-              <!-- SVG ikon örneği, istediğinle değiştir -->
-              <svg xmlns="http://www.w3.org/2000/SVG" width="24" height="24" fill="currentColor"
-                   class="bi bi-paperclip" viewBox="0 0 16 16">
-                <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z"/>
-              </svg>
-            </label>
-            <span id="fileNameDisplay" class="file-name"> </span>
-            <input type="file" id="fileInput" />
-          </div>
-        
           <input type="text" id="messageInput" placeholder="Mesajınızı yazın..." />
-          <button id="sendBtn">Gönder</button>
+          <button>Gönder</button>
         </div>
-
-        
       </div>
 
 
@@ -629,14 +552,6 @@ color: #fff;
 
       <!-- … senin mevcut .chat-container içeriğin … -->
     </section>
-  </div>
-  <div id="filePreviewModal" class="modal-overlay" style="display:none; align-items:center; justify-content:center;">
-    <div class="modal-content" style="background:white; padding:16px; border-radius:8px; max-width:300px; text-align:center;">
-      <h5>Dosya Önizlemesi</h5>
-      <div id="previewArea" style="margin:12px 0;"></div>
-      <button id="confirmFile" class="btn btn-sm btn-primary">Ekle</button>
-      <button id="cancelFile" class="btn btn-sm btn-light" style="margin-left:8px;">İptal</button>
-    </div>
   </div>
   <!-- popups -->
   <div id="profileModal" class="modal-overlay" style="display: none;">
@@ -722,28 +637,21 @@ color: #fff;
         withCredentials: true,
       }); // Sunucuya bağlan :contentReference[oaicite:4]{index=4}
     const BaseFileUrl = 'http://127.0.0.1:3000/file/'
-    const sendBtn  = document.querySelector('.chat-input button');
-    const messageInput  = document.getElementById('messageInput');
-    const chatListEl    = document.getElementById('chatListContainer');
+    var sendBtn  = document.querySelector('.chat-input button');
+    var messageInput  = document.getElementById('messageInput');
+    document.addEventListener('DOMContentLoaded',async () => {
+      const userId = "<%=user.id%>" // Token'dan kullanıcı ID'sini al
+      const username ="<%=user.username%>" // Token'dan kullanıcı adını al 
+      let receiverId = null; // to userId
+      let isGroup = null;
+      let receiverName = null; // to userName
+      const chatListEl    = document.getElementById('chatListContainer');
       const messagesEl    = document.getElementById('chatMessages');
       const chatContainer = document.querySelector('.chat-profile');
       const profileNameEl = document.getElementById('toprofilename');
       const profileImgEl  = document.getElementById('toprofile_img');
       const profileAvatarEl = document.getElementById('profile-avatar');
-      const fileNameDisplay = document.getElementById('fileNameDisplay');
-     // 1. “+Yeni kişi” menü öğesini yakala
-    const addUserTrigger = document.querySelector('#popupMenu li[data-action="add-user"]');
-    const addUserModal   = document.getElementById('addUserModal');
-    let receiverId = null; // to userId
-      let isGroup = null;
-      let receiverName = null; // to userName
       let currentRoomId = null;
-      let selectedFile = null; // dosya yükleme için
-    document.addEventListener('DOMContentLoaded',async () => {
-      const userId = "<%=user.id%>" // Token'dan kullanıcı ID'sini al
-      const username ="<%=user.username%>" // Token'dan kullanıcı adını al 
-      
-      
       const token = localStorage.getItem('token');
 
       sendBtn.addEventListener('click', () => {
@@ -757,10 +665,6 @@ color: #fff;
           sendMessage();
         }
       });
-
-      fileInput.addEventListener('change', e => {
-        selectedFile = e.target.files[0] || null;
-      }); 
 
       // 1) Kullanıcı girişi yapıldığında kendine özel odaya katıl
       socket.emit('join-user', { userId }); 
@@ -776,22 +680,22 @@ color: #fff;
           
             // Debugging için
           const li = document.createElement('li');
+          console.log(c)
           li.dataset.chatId = c._id;    
           li.innerHTML = `
             <img src="${BaseFileUrl}${c.isGroupChat ? `chat?url=${c.chatImage}` : (c.participants[0].user._id !== userId ? `user?url=${c.participants[0].user.avatar}` :`user?url=${c.participants[1].user.avatar}`)} " class="avatar" />
             <div class="chat-info" data-isGroup="${c.isGroupChat}">
               <div class="name">${c.isGroupChat ? c.chatName : (c.participants[0].user._id !== userId ? c.participants[0].user.name : c.participants[1].user.name)}</div>
-              <div class="last-message">${c.latestMessage?.messageType==='text' ? c.latestMessage.content:c.latestMessage?.messageType==='image'?"image":c.latestMessage?.messageType==='video'?"video":c.latestMessage?.messageType==='file'?"file":"boş"}</div>
+              <div class="last-message">${c.latestMessage?.content || ''}</div>
             </div>
           `;
           li.onclick = () => {
+            socket.emit('leave-room', { userId,roomId: currentRoomId }); // mevcut odadan çık
             // odaya katıl ve mesajları çek
-             // mevcut odadan çık
             currentRoomId = c._id;
-            console.log()
             receiverId = c.isGroupChat ? null : (c.participants[0].user._id !== userId ? c.participants[0].user._id : c.participants[1].user._id);
-            isGroup = c.isGroupChat;
             chatContainer.dataset.id = currentRoomId;
+            socket.emit('join-room', { roomId: currentRoomId });
             socket.emit('get-messages', { token, chatId: currentRoomId });
             // Profil başlığı güncelle
             document.documentElement.dataset.isGroup = c.isGroupChat;
@@ -831,7 +735,6 @@ color: #fff;
 
       // 4) Yeni mesaj geldiğinde listeye ekle
       socket.on('receive-message', (m) => {
-        console.log("Yeni mesaj geldi:",m)
         appendMessage(m);
         const chatItem = document
     .querySelector('#chatListContainer')
@@ -849,75 +752,37 @@ color: #fff;
       });
       
       function sendMessage() {
+        console.log("mesaj gönderiliyor")
         const content = messageInput.value.trim();
-  
-        if (!currentRoomId) return;
+        if (!content || !currentRoomId) return;
         // File upload desteği eklemek istersen:
-        console.log( receiverId, content,currentRoomId ,selectedFile)
-        console.log("type:",selectedFile?.type)
+        const file = null; // örnek: input[type=file]’dan alınabilir
         if(!isGroup) {
-          socket.emit('send-message-p2p', { userId:receiverId, content, originalname: selectedFile?.name, mimetype: selectedFile?.type,chatId:currentRoomId },selectedFile?selectedFile:undefined,(cb) => {
-            if(cb){
-              selectedFile = null; // dosya yükleme için
-              appendMessage(cb);
-              console.log("p2p mesajı gönderildi:",cb)
-              const chatItem = document.querySelector(
-      `#chatListContainer li[data-chat-id="${cb.chat._id}"]`
-    );
-              if(chatItem){
-    const lastMsgEl = chatItem.querySelector('.last-message');
-    lastMsgEl.textContent = cb.chat.latestMessage?.messageType==='text' ? cb.chat.latestMessage.content:cb.chat.latestMessage?.messageType==='image'?"image":cb.chat.latestMessage?.messageType==='video'?"video":cb.chat.latestMessage?.messageType==='file'?"file":"boş"
-    chatListContainer.prepend(chatItem);
-    
-  }else{
-    console.log("cb:",cb)
-    const li = document.createElement('li');
-    li.dataset.chatId = cb.chat._id;
-    li.innerHTML = `
-      <img src="${BaseFileUrl}user?url=${cb.chat.participants[0].user._id !== userId ? cb.chat.participants[0].user.avatar : cb.chat.participants[1].user.avatar}" class="avatar" />
-      <div class="chat-info" data-isGroup="${cb.chat.isGroupChat}">
-        <div class="name">${cb.chat.participants[0].user._id !== userId ? cb.chat.participants[0].user.name : cb.chat.participants[1].user.name}</div>
-        <div class="last-message">${cb.chat.latestMessage?.messageType==='text' ? cb.chat.latestMessage.content:cb.chat.latestMessage?.messageType==='image'?"image":cb.chat.latestMessage?.messageType==='video'?"video":cb.chat.latestMessage?.messageType==='file'?"file":"boş"}</div>
-      </div>
-    `;
-    chatListContainer.prepend(li);
-    li.onclick = () => {
-      currentRoomId = cb.chat._id;
-      receiverId = currentRoomId;
-      chatContainer.dataset.id = currentRoomId;
-      socket.emit('get-messages', { token, chatId: currentRoomId });
-      document.documentElement.dataset.isGroup = cb.chat.isGroupChat;
-      profileNameEl.textContent = cb.chat.participants[0].user._id !== userId ? cb.chat.participants[0].user.name : cb.chat.participants[1].user.name;
-      profileImgEl.src = `${BaseFileUrl}user?url=${cb.chat.participants[0].user._id !== userId ? cb.chat.participants[0].user.avatar : cb.chat.participants[1].user.avatar}`;
-    };
-    chatListContainer.prepend(li);
-  }
-  }
-         
-          });
+          console.log("girdi")
+          socket.emit('send-message-p2p', { userId:receiverId, token, content, file });
         } else {
           // grup mesajı gönder
-         
-          socket.emit('send-message-group', { chatId: currentRoomId,content, originalname: selectedFile?.name, mimetype: selectedFile?.type },selectedFile?selectedFile:undefined,(cb) => {
-            if(cb){
-              selectedFile = null; // dosya yükleme için
-              appendMessage(cb);
-              console.log("grup mesajı gönderildi:",cb)
-              const chatItem = document.querySelector(
-      `#chatListContainer li[data-chat-id="${cb.chat._id}"]`
-    );
-  
-    const lastMsgEl = chatItem.querySelector('.last-message');
- 
-    lastMsgEl.textContent = cb.chat.latestMessage?.messageType==='text' ? cb.chat.latestMessage.content:cb.chat.latestMessage?.messageType==='image'?"image":cb.chat.latestMessage?.messageType==='video'?"video":cb.chat.latestMessage?.messageType==='file'?"file":"boş"
-    chatListContainer.prepend(chatItem);
-           
-          
-          }
-          });
+          socket.emit('send-message-group', { chatId: currentRoomId, token, content, file });
         }
         messageInput.value = '';
-      
+        appendMessage({
+          sender: { _id: userId, name: name }, // kendi adını ekle
+          content,
+          messageType: 'text',
+          createdAt: new Date().toISOString(),
+        });
+        const chatItem = document
+    .querySelector('#chatListContainer')
+    .querySelector(`li[data-chat-id="${currentRoomId}"]`);
+
+  if (chatItem) {
+    // 2) .last-message div’ini güncelle
+    const lastMsgEl = chatItem.querySelector('.last-message');
+    lastMsgEl.textContent = content;
+
+    // (Opsiyonel) 3) En üste taşımak isterseniz:
+    chatListContainer.prepend(chatItem);
+  }
       }
 
     
@@ -1033,20 +898,18 @@ color: #fff;
 
       socket.on('receive-chat',(data) => {
         const li = document.createElement('li');
-        li.dataset.chatId = data._id;
           li.innerHTML = `
             <img src="${BaseFileUrl}${data.isGroupChat ? `chat?url=${data.chatImage}` : (data.participants[0].user._id !== userId ? `user?url=${data.participants[0].user.avatar}` :`user?url=${data.participants[1].user.avatar}`)} " class="avatar" />
             <div class="chat-info" data-isGroup="${data.isGroupChat}">
               <div class="name">${data.isGroupChat ? data.chatName : (data.participants[0].user._id !== userId ? data.participants[0].user.name : data.participants[1].user.name)}</div>
-              <div class="last-message">${data.latestMessage?.messageType==='text' ? data.latestMessage:data.latestMessage?.messageType==='image'?"image":data.latestMessage?.messageType==='video'?"video":data.latestMessage?.messageType==='file'?"file":"boş"}</div>
+              <div class="last-message">${data.latestMessage?.content || ''}</div>
             </div>
           `;
           li.onclick = () => {
-        
+            console.log("5")
             // odaya katıl ve mesajları çek
-            receiverId = data.isGroupChat ? null : (data.participants[0].user._id !== userId ? data.participants[0].user._id : data.participants[1].user._id);
             currentRoomId = data._id;
-            isGroup = data.isGroupChat;
+            socket.emit('join-room', { roomId: currentRoomId });
             socket.emit('get-messages', { token, chatId: currentRoomId });
             // Profil başlığı güncelle
             profileNameEl.textContent = data.isGroupChat ? data.chatName : (data.participants[0].user._id !== userId ? data.participants[0].user.name : data.participants[1].user.name);
@@ -1058,9 +921,7 @@ color: #fff;
           sendMessage(isGroup,data.isGroupChat?data.chatId : data.participants[0].user._id !== userId ? data.participants[0].user._id : data.participants[1].user._id,username);
           };*/
           };
-
           chatListEl.appendChild(li);
-          chatListContainer.prepend(li);
           li.click();
       })
     
@@ -1070,18 +931,21 @@ color: #fff;
       socket.on('connect_error', (err) => console.error('Bağlantı hatası:', err));
     });
 
-  
+   
 
-  const addUserList  = document.getElementById('addUserList');
-  
-  addUserTrigger.onclick = () => {
-    console.log("tıklandı1")
+    //get users  const addUserTrigger = document.querySelector('#popupMenu li[data-action="add-user"]');
+  const addUserTrigger2 = document.querySelector('#popupMenu li[data-action="add-user"]');
+  const addUserModal2  = document.getElementById('addUserModal');
+  const addUserList    = document.getElementById('addUserList');
+
+  addUserTrigger2.onclick = () => {
     // Listeyi temizle
     addUserList.innerHTML = '';
+
     // Kullanıcıları socket’tan iste
     socket.emit('get-users');
     // Modalı aç
-    addUserModal.style.display = 'flex';
+    addUserModal2.style.display = 'flex';
   }
 
   // Socket’tan kullanıcı listesi gelince
@@ -1126,25 +990,25 @@ color: #fff;
 addUserList.onclick = e => {
   const li = e.target.closest('li[data-id]');
   if (!li) return;
+
   const selectedId   = li.dataset.id;
   const selectedName = li.dataset.name;
   const selectedAvatar = li.querySelector('img').src;
+  const profileNameEl = document.getElementById('toprofilename');
+  const profileImgEl  = document.getElementById('toprofile_img');
   const messages = document.getElementById('chatMessages');
   messages.innerHTML = ''; // Temizle
   profileNameEl.textContent = selectedName;
-  chatContainer.dataset.id = selectedId;
   profileImgEl.src = selectedAvatar
-  currentRoomId = selectedId;
-  receiverId = selectedId;
   closeAddUserModal();
 };
 
   function closeAddUserModal() {
-    addUserModal.style.display = 'none';
+    addUserModal2.style.display = 'none';
   }
-  console.log(addUserModal)
-  addUserModal.onclick = e => {
-    if (e.target === addUserModal) closeAddUserModal();
+
+  addUserModal2.onclick = e => {
+    if (e.target === addUserModal2) closeAddUserModal();
   }
 /*
   function addUser(selectedId, selectedName) {
@@ -1366,17 +1230,45 @@ chatSearchInput.onclick = e => {
 };
 </script>
 
-
-<!--
 <script>
+  // 1. “+Yeni kişi” menü öğesini yakala
+  const addUserTrigger = document.querySelector('#popupMenu li[data-action="add-user"]');
+  const addUserModal   = document.getElementById('addUserModal');
 
+  addUserTrigger.onclick = e => {
+    addUserModal.style.display = 'flex';
+  };
+
+  function closeAddUserModal() {
+    addUserModal.style.display = 'none';
+  }
+
+  // 2. Modal arka plana tıklayınca da kapansın
+  addUserModal.onclick = e => {
+    if (e.target === addUserModal) closeAddUserModal();
+  };
+
+  // 3. Kişi seçildiğinde socket.emit ile yeni sohbet aç
+  /*
+  function addUser(selectedId, selectedName) {
+    console.log('Selected user:', selectedId, selectedName); // Debugging için
+    // currentRoomId, userId gibi değişkenlerin üstte tanımlı olduğundan emin olun
+    socket.emit('create-chat', {
+      isGroupChat: false,
+      participants: [userId, selectedId]
+    });
+    closeAddUserModal();
+  }*/
+</script>
+
+<script>
+  // 1) Trigger elemanını seçelim
 const newGroupBtn = document.querySelector('#popupMenu li[data-action="add-group"]');
 const newGroupModal = document.getElementById('newGroupModal');
 const cancelNewGroup = document.getElementById('cancelNewGroup');
 
 // 2) Açma
 newGroupBtn.onclick = e => {
-  console.log("tıklandı grup")
   e.stopPropagation();              // menünün kendisi kapanmasın
   newGroupModal.style.display = 'flex';
 };
@@ -1394,7 +1286,7 @@ newGroupModal.onclick = e => {
 };
 
 </script>
--->
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const newGroupBtn        = document.querySelector('#popupMenu li[data-action="add-group"]');
@@ -1427,18 +1319,25 @@ newGroupModal.onclick = e => {
       socket.emit('get-users-group');
       newGroupModal.style.display = 'flex';
     };
-    
     cancelNewGroup.onclick = () => newGroupModal.style.display = 'none';
-
     newGroupModal.onclick = e => {
-      console.log("tıklandı grup2")
       if (e.target === newGroupModal) newGroupModal.style.display = 'none';
     };
     
+    
+    // Modal kapatma
+    cancelNewGroup.onclick = () => {
+      newGroupModal.style.display = 'none';
+    };
+    newGroupModal.onclick = e => {
+      if (e.target === newGroupModal) {
+        newGroupModal.style.display = 'none';
+      }
+    };
 
     // API'den gelen kullanıcıları listeler
     socket.on('receive-users-group', users => {
-      
+      console.log('Kullanıcılar:', users); // Debugging için
       groupUserList.innerHTML = users.map(u => {
         const avatarUrl = u.avatar
           ? `${BaseFileUrl}user?url=${u.avatar}`
@@ -1478,66 +1377,6 @@ newGroupModal.onclick = e => {
       newGroupModal.style.display = 'none';
     };
   });
-
-</script>
-
-
-<script>
-  // JS – DOMContentLoaded içinde veya script sonunda
-const fileInput      = document.getElementById('fileInput');
-const modal          = document.getElementById('filePreviewModal');
-const previewArea    = document.getElementById('previewArea');
-const confirmFileBtn = document.getElementById('confirmFile');
-const cancelFileBtn  = document.getElementById('cancelFile');
-let pendingFile      = null;
-
-
-
-// 2) Dosya seçildiğinde: oku, göster ve modal’ı aç
-fileInput.addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  pendingFile = file;
-  previewArea.innerHTML = '';  
-
-  // Metin dosyaysa adı göster
-  if (file.type.startsWith('text/') || file.type==='application/pdf') {
-    previewArea.textContent = `Dosya: ${file.name}`;
-  }
-  // Görsel dosyaysa önizle
-  else if (file.type.startsWith('image/')) {
-    const img = document.createElement('img');
-    const reader = new FileReader();
-    reader.onload = () => img.src = reader.result;
-    reader.readAsDataURL(file);
-    previewArea.appendChild(img);
-  }
-  // Diğer türler
-  else {
-    previewArea.textContent = `Seçilen dosya: ${file.name}`;
-  }
-
-  modal.style.display = 'flex';
-});
-
-// 3) İptal’de dosyayı bırak, input’u temizle
-cancelFileBtn.addEventListener('click', () => {
-  pendingFile = null;
-  fileInput.value = '';
-  modal.style.display = 'none';
-});
-
-// 4) Ekle’de pendingFile’ı onayla, sonra modal’ı kapat
-confirmFileBtn.addEventListener('click', () => {
-  // burada artık pendingFile, sendMessage() içinde gönderilmeye hazır
-  // istersen bir simge/UI ile de gösterebilirsin
-  console.log('Dosya onaylandı:', pendingFile);
-  selectedFile = pendingFile; // global değişkene ata
-  modal.style.display = 'none';
-});
-
-
-
 </script>
 
 

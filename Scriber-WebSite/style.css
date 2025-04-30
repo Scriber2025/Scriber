@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color: #fff;
+  background-color: #ffffff;
   color: #333;
 }
 
@@ -17,7 +17,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: orange;
+  background-color:  #ff7200;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -87,12 +87,12 @@ body {
 }
 
 /* DOWNLOAD SECTION */
-.download-section {
+.talk-share-section {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 60px 20px;
-  background-color: #ffe6cc;
+  background: linear-gradient(90deg, #e2e2e2, #ff9b2d);
 }
 
 .download-box {
@@ -123,7 +123,7 @@ body {
 .download-btn {
   padding: 12px 28px;
   font-size: 1rem;
-  background-color: orange;
+  background-color:  #ff7200;
   color: white;
   border: none;
   border-radius: 8px;
@@ -132,7 +132,7 @@ body {
 }
 
 .download-btn:hover {
-  background-color: #e69500;
+  background-color: #ff7200;
 }
 
 /* FEATURES SECTION */
@@ -157,10 +157,28 @@ body {
 .feature-text h2 {
   font-size: 1.8rem;
   margin-bottom: 10px;
-  color: orange;
+  color:  #ff7200;
 }
 
 .feature-text p {
   font-size: 1.1rem;
   max-width: 500px;
 }
+
+/* Download Button Style */
+.download-button {
+  display: inline-block;
+  background-color: #ff7200; /* Turuncu renk */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #e66000; /* Hover durumunda daha koyu turuncu */
+}
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Scriber</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="login.css">
+  <style>
+    .top-right-home {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="index.html" class="logo">
+    <img src="../Scriber-WebSite/header_logo.png" alt="Scriber Logo">
+  </a>
+  <nav class="navbar-links">
+    <div class="dropdown">
+      <a href="#" class="nav-link">Features</a>
+      <div class="dropdown-content">
+        <ul>
+          <li>Messaging</li>
+          <li>Video and Voice Calls</li>
+          <li>Screen Sharing</li>
+          <li>Photo and Video Sharing</li>
+          <li>Group Chat</li>
+        </ul>
+      </div>
+    </div>
+    <a href="#download" class="nav-link">Download</a>
+    <a href="../Scriber-WebSite/contact.html" class="nav-link">Contact</a>
+  </nav>
+  <div class="auth-buttons">
+    <a href="../Scriber-WebSite/index.html" class="auth-link">Home</a>
+  </div>
+</header>
+
+
+  <div class="center">
+    <div class="container">
+      <div class="form-box login">
+        <form action="../Scriber-Backend/deneme.html">
+          <h1>Login</h1>
+          <div class="input-box">
+            <input type="text" placeholder="Username" required>
+            <i class='bx bxs-user'></i>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+          </div>
+          <div class="forgot-link">
+            <a href="#">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <p>or login with social platforms</p>
+          <div class="social-icons">
+            <a href="#"><i class='bx bxl-google'></i></a>
+            <a href="#"><i class='bx bxl-facebook'></i></a>
+            <a href="#"><i class='bx bxl-github'></i></a>
+            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-box register">
+        <form action="login.html">
+          <h1>Signup</h1>
+          <div class="input-box">
+            <input type="text" placeholder="Username" required>
+            <i class='bx bxs-user'></i>
+          </div>
+          <div class="input-box">
+            <input type="email" placeholder="Email" required>
+            <i class='bx bxs-envelope'></i>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+          </div>
+          <button type="submit" class="btn">Signup</button>
+          <p>or signup with social platforms</p>
+          <div class="social-icons">
+            <a href="#"><i class='bx bxl-google'></i></a>
+            <a href="#"><i class='bx bxl-facebook'></i></a>
+            <a href="#"><i class='bx bxl-github'></i></a>
+            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+          </div>
+        </form>
+      </div>
+
+      <div class="toggle-box">
+        <div class="toggle-panel toggle-left">
+          <h1>Hello Welcome!</h1>
+          <p>Don't have an account?</p>
+          <button class="btn register-btn">Signup</button>
+        </div>
+        <div class="toggle-panel toggle-right">
+          <h1>Welcome Back!</h1>
+          <p>Already have an account?</p>
+          <button class="btn login-btn">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</div>
+</body>
+</html>

@@ -9,7 +9,7 @@ const crypto = require('crypto');
 // @route   GET
 
 
-const { uploadToS3, deleteToS3, getFilesNamefromS3, getFilefromS3, moveFilefromS3,getFileCountfromS3,getFileFromS3WithUrl } = require('../../config/aws');
+
 
 
 router.get('/:chatId', auth, async (req, res) => {
@@ -27,17 +27,14 @@ router.get('/:chatId', auth, async (req, res) => {
 
 router.post('/p2p', auth, upload.single('files') , async (req, res) => {//bu router postman'den çağrılamıyor çünkü
 //  form-data'da files girince.değişkenleri body kısmına ekleyemiyoruz
-    const { userId, content,messageType} = req.body;
-    console.log(req.body)
-    console.log(req.user.id)
-   // console.log("mesaj gönderildi: ",req.body)
+    const { userId, content, messageType } = req.body;
+    console.log("mesaj gönderildi: ",req.body)
     if (!userId) {
       return res.status(400).json({ message: 'userId gereklidir.' });
     }
     try {
       if(messageType !== 'text'){
         const file = req.file;
-        console.log(file)
         if (!file) {
           return res.status(400).json({ message: 'Dosya yüklenemedi' });
         }
@@ -48,6 +45,7 @@ router.post('/p2p', auth, upload.single('files') , async (req, res) => {//bu rou
         }
         var attachments = [{url:fileName,mimeType:file.mimetype}];
       }
+      console.log(req.user.id,userId)
       let hasChat = await chats.findOne({
         isGroupChat: false,
         $and: [
@@ -74,14 +72,9 @@ router.post('/p2p', auth, upload.single('files') , async (req, res) => {//bu rou
   
       const fullMessage = await messages.findById(newMessage._id)
         .populate('sender', 'name email avatar')
-        .populate({
-          path: 'chat',
-          populate: [
-            { path: 'latestMessage', select: 'messageType content' },
-            { path: 'participants.user', select: 'name avatar' }
-          ]
-        });
-      res.status(200).json(fullMessage);
+        .populate('chat');
+  
+      res.status(201).json(fullMessage);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server Error' });
@@ -128,9 +121,9 @@ router.post('/group', auth, upload.single('files') , async (req, res) => {//bu r
 
     const fullMessage = await messages.findById(newMessage._id)
       .populate('sender', 'name email avatar')
-      .populate({path:'chat',populate:{path:'latestMessage',select:'messageType content'}});
-      console.log("mesaj gönderildi: ",fullMessage)
-    res.status(200).json(fullMessage);
+      .populate('chat');
+
+    res.status(201).json(fullMessage);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server Error' });
