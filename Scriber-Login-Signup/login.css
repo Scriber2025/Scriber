@@ -11,7 +11,7 @@ body {
     min-height: 100vh;
     background: linear-gradient(90deg, #e2e2e2, #ff9b2d);
     margin: 0;
-    overflow: hidden; /* Sayfanın kaydırılmasını engeller */
+    /* overflow: hidden; /* Sayfanın kaydırılmasını engeller */
 }
 
 .center {
