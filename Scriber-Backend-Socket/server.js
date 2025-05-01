@@ -32,65 +32,79 @@ io.on('connection',async  (socket) => {
     return token;
   }
 
-    socket.on("join-room", ({roomId}) => {
-      socket.join(socket.userId);  
-      console.log(`Socket1 ${socket.id} joined room ${roomId}`);
-      console.log("odaya girdi")
-   
-  
-    socket.on("send-message-p2p",async ({userId,content,file}) => {
-      
+    socket.on("send-message-p2p",async ({userId,content,originalname,mimetype,chatId},buffer,ack) => {
         try{
-          console.log("mesaj gönderildi")
           const token = getTokensFromCookie(socket.request);
-            const sendMessage = await axios.post("http://127.0.0.1:3000/message/p2p",{userId,
-                content,
-                file,
-                messageType:file?file.type:"text"
-            },{
+        
+          const form = new formData();
+          form.append('userId', userId);
+          form.append('content', content);
+          form.append('messageType', mimetype ? mimetype.split('/')[0] : 'text');
+          if(mimetype){
+            form.append('files',   buffer, {
+              filename: originalname || 'upload.png',
+              contentType: mimetype || 'application/octet-stream'
+            });    
+          }
+          
+  
+            const sendMessage = await axios.post("http://127.0.0.1:3000/message/p2p",form,{
               headers: {
+                ...form.getHeaders(),
                 Cookie: `token=${token}`
               }
             })
+        
             if(sendMessage.status === 200){
                 //console.log("mesaj gönderildi")
-                socket.to(roomId).emit("receive-message", sendMessage.data);
+                socket.to(chatId).emit("receive-message", sendMessage.data);
+                console.log("mesaj gönderildi",sendMessage.data)
+                if (typeof ack === 'function') ack(sendMessage.data);
             }
+
         }catch(err){
             console.log(err)
         }
     })
   
-    socket.on("send-message-group",async ({chatId,content,file}) => {
+    socket.on("send-message-group",async ({chatId,content,originalname,mimetype},buffer,ack) => {
         
       try{
         
         const token = getTokensFromCookie(socket.request);
-          const sendMessage = await axios.post("http://127.0.0.1:3000/message/group",{chatId,
-              content,
-              file,
-              messageType:file?file.type:"text"
-          },{
+        console.log({chatId,content,originalname,mimetype})
+        const form = new formData();
+        form.append('chatId', chatId);
+        form.append('content', content);
+   
+        form.append('messageType', mimetype ? mimetype.split('/')[0] : 'text');
+        if(mimetype){
+          form.append('files',   buffer, {
+            filename: originalname || 'upload.png',
+            contentType: mimetype || 'application/octet-stream'
+          });    
+        }
+
+
+
+
+          const sendMessage = await axios.post("http://127.0.0.1:3000/message/group",form,{
             headers: {
+              ...form.getHeaders(),
               Cookie: `token=${token}`
             }
           })
           if(sendMessage.status === 200){
               //console.log("mesaj gönderildi")
-              socket.to(roomId).emit("receive-message", sendMessage.data);
+              socket.to(chatId).emit("receive-message", sendMessage.data);
+              if (typeof ack === 'function') ack(sendMessage.data);
           }
       }catch(err){
           console.log(err)
       }
   })
 
-  socket.on("leave-room", ({ userId,roomId }) => {
-    
-    
-    socket.leave(roomId);
-    console.log(`${userId} left room ${roomId}`);
-  });
-    });
+
     
     socket.on("get-messages", async ({chatId}) => {
     try{
@@ -150,6 +164,7 @@ io.on('connection',async  (socket) => {
     });
     socket.on('get-users',async () => {
       try{
+      
         const token = getTokensFromCookie(socket.request);
           const { data } = await axios.get(`http://localhost:3000/user/users/p2p`, {
       headers: {
@@ -184,12 +199,9 @@ io.on('connection',async  (socket) => {
         const token = getTokensFromCookie(socket.request);
         
         if(isGroupChat){
-          console.log("katılımcılar: ",participants)
           const form = new formData();
-          console.log("buffer:",buffer)
           form.append('chatName', chatName);
           form.append('users', JSON.stringify(participants));
-          console.log(originalname,mimetype)
           form.append('files',   buffer, {
             filename: originalname || 'upload.png',
             contentType: mimetype || 'application/octet-stream'
