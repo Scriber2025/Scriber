@@ -6,7 +6,7 @@ const blacklist = require('../../models/blacklist');
 const auth = require('../../middlewares/authweb');
 
 router.get('/', async (req, res) => {
-    res.render('pages/login', { 
+    res.render('pages/auth', { 
       title: 'Login',
       message: null
     });
@@ -82,7 +82,7 @@ router.get('/logout', auth, async (req, res) => {
       sameSite: 'lax'
     });
 
-    res.redirect('/auth/login');
+    res.redirect('/auth');
 
   } catch (err) {
     console.error('Logout error:', err);
