@@ -2,174 +2,591 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap</title>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Signup</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    /* Reset & Box Sizing */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; font-family: 'Arial', sans-serif; color: #fff; }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-    /* Arka plan + karartma */
-    body {
-      background: url('/static/images/bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      position: relative;
-      overflow: hidden;
-    }
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 1;
-    }
-
-    /* Preload: form gizli ve aşağıda */
-    body.is-preload .form-box {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    /* Form kapsayıcı */
-    .container {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      justify-content: center;
-      flex-direction: column; /* ← burayı ekliyoruz */
-      align-items: center;
-      height: 100%;
-      padding: 1rem;
-    }
-    .form-box {
-      width: 100%;
-      max-width: 400px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(8px);
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Başlık */
-    .form-box h1 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-      letter-spacing: 2px;
-    }
-
-    /* Input grubu */
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      font-size: 1rem;
-    }
-    .form-group input::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-
-    /* Buton */
-    .btn {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 1.5rem;
-      background: transparent;
-      border: 2px solid #fff;
-      border-radius: 5px;
-      font-size: 1rem;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .btn:hover {
-      background: #fff;
-      color: #000;
-    }
-
-    /* Alt metin */
-    .text-center {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-    .text-center a {
-      color: #fff;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s;
-    }
-    .text-center a:hover {
-      border-color: #fff;
-    }
-    .alert {
-  position: relative;
-  top: 0;
-  margin-bottom: 15px; /* kutuya yaklaşsın */
-  width: 100%;
-  max-width: 400px;
-  font-size: 0.95rem;
-  text-align: center;
+.top-right-home {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
-    
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(90deg, #e2e2e2, #ff9b2d);
+    margin: 0;
+    /* overflow: hidden; /* Sayfanın kaydırılmasını engeller */
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; /* Sayfa genişliğine tam uyum sağlar */
+}
+
+.container {
+    position: relative;
+    width: 850px;
+    height: 550px;
+    background: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 0 30px rgba(0,0,0,.2);
+    margin: 20px;
+    overflow: hidden;
+}
+
+.form-box {
+    position: absolute;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    color: #333333;
+    text-align: center;
+    padding: 40px;
+    z-index: 1;
+    transition: .6s ease-in-out 1.2s, visibility 0s 1s;
+}
+
+.container.active .form-box {
+    right: 50%;
+}
+
+.form-box.register {
+    visibility: hidden;
+}
+
+.container.active .form-box.register {
+    visibility: visible;
+}
+
+form {
+    width: 100%;
+}
+
+.container h1 {
+    font-size: 36px;
+    margin: -10px 0;
+}
+
+.input-box {
+    position: relative;
+    margin: 30px 0;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 13px 50px 13px 20px;
+    background: #eeeeee;
+    border-radius:8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #333333;
+    font-weight: 500;
+}
+
+.input-box input::placeholder {
+    color: #888888;
+    font-weight: 400;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #888888;
+}
+
+.forgot-link {
+    margin: -15px 0 15px;
+}
+
+.forgot-link a {
+    font-size: 14.5px;
+    color: #333333;
+    text-decoration: none;
+}
+
+.btn {
+    width: 100%;
+    height: 48px;
+    background: #ff7200;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.container p {
+    font-size: 14.5px;
+    margin: 15px 0;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+}
+
+.social-icons a {
+    display: inline-flex;
+    padding: 10px;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    font-size: 24px;
+    color: #333333;
+    text-decoration: none;
+    margin: 0 8px;
+}
+
+.toggle-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.toggle-box::before {
+    content: '';
+    position: absolute;
+    left: -250%;
+    width: 300%;
+    height: 100%;
+    background: #ff7200;
+    border-radius: 150px;
+    z-index: 2;
+    transition: 1.8s ease-in-out;
+}
+
+.container.active .toggle-box::before {
+    left: 50%;
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    transition: .6s ease-in-out;
+}
+
+.toggle-panel.toggle-left {
+    left: 0;
+    transition-delay: 1.2s;
+}
+
+.container.active .toggle-panel.toggle-left {
+    left: -50%;
+    transition-delay: .6s;
+}
+
+.toggle-panel.toggle-right {
+    right: -50%;
+    transition-delay: .6s;
+}
+
+.container.active .toggle-panel.toggle-right {
+    right: 0;
+    transition-delay: 1.2s;
+}
+
+.toggle-panel p {
+    margin-bottom: 20px;
+}
+
+.toggle-panel .btn {
+    width: 160px;
+    height: 46px;
+    background: transparent;
+    border: 2px solid #ffffff;
+    box-shadow: none;
+}
+
+@media screen and (max-width: 650px) {
+    .container {
+        height: calc(100vh - 40px);
+    }
+
+    .form-box {
+        bottom: 0;
+        width: 100%;
+        height: 70%;
+    }
+
+    .container.active .form-box {
+        right: 0;
+        bottom: 30%;
+    }
+
+    .toggle-box::before {
+        left: 0;
+        top: -270%;
+        width: 100%;
+        height: 300%;
+        border-radius: 20vw;
+    }
+
+    .container.active .toggle-box::before {
+        left: 0;
+        top: 70%;
+    }
+
+    .toggle-panel {
+        width: 100%;
+        height: 30%;
+    }
+
+    .toggle-panel.toggle-left {
+        top: 0;
+    }
+
+    .container.active .toggle-panel.toggle-left {
+        left: 0;
+        top: -30%;
+    }
+
+    .toggle-panel.toggle-right {
+        right: 0;
+        bottom: -30%;
+    }
+
+    .container.active .toggle-panel.toggle-right {
+        bottom: 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .form-box {
+        padding: 20px;
+    }
+
+    .toggle-panel h1 {
+        font-size: 30px;
+    }
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color:  #ff7200;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logo img {
+    height: 40px;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* DROPDOWN */
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: 0;
+    background-color: white;
+    color: black;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 250px;
+  }
+  
+  .dropdown-content ul {
+    list-style: none;
+  }
+  
+  .dropdown-content li {
+    margin-bottom: 10px;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* AUTH BUTTONS */
+  .auth-buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .auth-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  /* DOWNLOAD SECTION */
+  .download-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background-color: #ffe6cc;
+  }
+  
+  .download-box {
+    text-align: center;
+    position: relative;
+  }
+  
+  .download-box img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 15px;
+  }
+  
+  .download-content {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+  }
+  
+  .download-content h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .download-btn {
+    padding: 12px 28px;
+    font-size: 1rem;
+    background-color:  #ff7200;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .download-btn:hover {
+    background-color: #ff7200;
+  }
+  
+  /* FEATURES SECTION */
+  .features {
+    padding: 80px 50px;
+  }
+  
+  .feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  
+  .feature-item img {
+    width: 200px;
+    height: 200px;
+    margin-right: 40px;
+    border-radius: 15px;
+    object-fit: cover;
+  }
+  
+  .feature-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color:  #ff7200;
+  }
+  
+  .feature-text p {
+    font-size: 1.1rem;
+    max-width: 500px;
+  }
   </style>
 </head>
-<body class="is-preload">
-  <div class="container">
-    <% if (message) { %>
-      <div class="alert <%= message.type === 'success' ? 'alert-success' : '' %>
-                           <%= message.type === 'error' ? 'alert-danger' : '' %>
-                           <%= message.type === 'info' ? 'alert-info' : '' %>
-                           alert-dismissible fade show" role="alert">
-        <%= message.text %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <a href="/" class="logo">
+    <img src="/static/images/header_logo.png" alt="Scriber Logo">
+  </a>
+  <nav class="navbar-links">
+    <div class="dropdown">
+      <a href="#" class="nav-link">Features</a>
+      <div class="dropdown-content">
+        <ul>
+          <li>Messaging</li>
+          <li>Video and Voice Calls</li>
+          <li>Screen Sharing</li>
+          <li>Photo and Video Sharing</li>
+          <li>Group Chat</li>
+        </ul>
       </div>
+    </div>
+    <a href="#download" class="nav-link">Download</a>
+    <a href="/contact" class="nav-link">Contact</a>
+  </nav>
+  <div class="auth-buttons">
+    <a href="/" class="auth-link">Home</a>
+  </div>
+</header>
+
+<div class="center">
+  <div class="container" id="container">
+    <% if (message) { %>
+    <div class="alert <%= message.type === 'success' ? 'alert-success' : '' %>
+                        <%= message.type === 'error' ? 'alert-danger' : '' %>
+                        <%= message.type === 'info' ? 'alert-info' : '' %>
+                        alert-dismissible fade show" role="alert">
+      <%= message.text %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <% } %>
-    <div class="form-box">
-      <h1>Giriş Yap</h1>
-      <form id="loginForm" method="POST" action="/auth/login">
-        <div class="form-group">
-          <label for="username">Email</label>
-          <input type="text" id="email" name="email" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Şifre</label>
-          <input type="password" id="password" name="password" placeholder="Şifrenizi Girin" required>
-        </div>
-        <button type="submit" class="btn">Giriş Yap</button>
-      </form>
-      <p class="text-center">
-        Henüz hesabın yok mu? <a href="/auth/register">Kayıt Ol</a>
-      </p>
+
+    <!-- Giriş Formu -->
+    <div class="form-box login">
+        <form action="../Scriber-Loading-Scene/loading.html">
+          <h1>Login</h1>
+          <div class="input-box">
+            <input type="text" placeholder="Username" required>
+            <i class='bx bxs-user'></i>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+          </div>
+          <div class="forgot-link">
+            <a href="#">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <p>or login with social platforms</p>
+          <div class="social-icons">
+            <a href="#"><i class='bx bxl-google'></i></a>
+            <a href="#"><i class='bx bxl-facebook'></i></a>
+            <a href="#"><i class='bx bxl-github'></i></a>
+            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+          </div>
+        </form>
+      </div>
+
+    <!-- Kayıt Formu -->
+    <div class="form-box register">
+        <form action="login.html">
+          <h1>Signup</h1>
+          <div class="input-box">
+            <input type="text" placeholder="Username" required>
+            <i class='bx bxs-user'></i>
+          </div>
+          <div class="input-box">
+            <input type="email" placeholder="Email" required>
+            <i class='bx bxs-envelope'></i>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+          </div>
+          <button type="submit" class="btn">Signup</button>
+          <p>or signup with social platforms</p>
+          <div class="social-icons">
+            <a href="#"><i class='bx bxl-google'></i></a>
+            <a href="#"><i class='bx bxl-facebook'></i></a>
+            <a href="#"><i class='bx bxl-github'></i></a>
+            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+          </div>
+        </form>
+      </div>
+
+    <!-- Sağ ve Sol Panel Arka Planı -->
+    <div class="toggle-box">
+      <div class="toggle-panel toggle-left">
+        <h1>Hello Welcome!</h1>
+        <p>Don't have an account?</p>
+        <button class="btn" id="toggleRegister">Sign up</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+         <h1>Welcome Back!</h1>
+        <p>Already have an account?</p>
+        <button class="btn" id="toggleLogin">Login</button>
+      </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // Yüklenince animasyonu başlat
-    window.addEventListener('load', () => {
-      document.body.classList.remove('is-preload');
-    });
+<script>
+  window.addEventListener('load', () => {
+    document.body.classList.remove('is-preload');
+  });
 
-    const API_BASE = 'http://127.0.0.1:3000/api';
+  const container = document.getElementById("container");
+  const toggleLogin = document.getElementById("toggleLogin");
+  const toggleRegister = document.getElementById("toggleRegister");
+  const goToRegister = document.getElementById("goToRegister");
+  const goToLogin = document.getElementById("goToLogin");
 
+  toggleRegister && toggleRegister.addEventListener("click", () => {
+    container.classList.add("active");
+  });
+
+  goToRegister && goToRegister.addEventListener("click", (e) => {
+    e.preventDefault();
+    container.classList.add("active");
+  });
+
+  toggleLogin && toggleLogin.addEventListener("click", () => {
+    container.classList.remove("active");
+  });
+
+  goToLogin && goToLogin.addEventListener("click", (e) => {
+    e.preventDefault();
+    container.classList.remove("active");
+  });
+
+  
    /* // Giriş Formu
     document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
@@ -198,7 +615,7 @@
         alert('Sunucu hatası');
       }
     });*/
-  </script>
+</script>
 
 </body>
 </html>

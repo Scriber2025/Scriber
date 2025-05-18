@@ -5,19 +5,13 @@ const jwt = require('jsonwebtoken');
 const blacklist = require('../../models/blacklist');
 const auth = require('../../middlewares/authweb');
 
-router.get('/login', async (req, res) => {
+router.get('/', async (req, res) => {
     res.render('pages/login', { 
       title: 'Login',
       message: null
     });
   });
 
-router.get('/register', async (req, res) => {
-    res.render('pages/register', { 
-      title: 'Register',
-      message: null
-    });
-  });
 
 // @route   POST
 
