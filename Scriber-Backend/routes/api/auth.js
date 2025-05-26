@@ -23,7 +23,6 @@ router.get('/register', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-    const {jwt}=req.headers;
     try {
       let user = await users.findOne({ email });
       if (user) return res.status(400).json({ message: 'Email already in use' });

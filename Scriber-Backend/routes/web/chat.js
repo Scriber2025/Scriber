@@ -5,7 +5,16 @@ const messages = require('../../models/message');
 const auth = require('../../middlewares/authweb');
 const upload = require('../../helpers/multer');
 const { uploadToS3, deleteToS3, getFilesNamefromS3, getFilefromS3, moveFilefromS3,getFileCountfromS3,getFileFromS3WithUrl } = require('../../config/aws');
+const { v4: uuidV4 } = require('uuid')
 // @route   GET 
+
+
+
+router.get('/video/create', async (req, res) => {
+  console.log("create chat room");
+  res.redirect(`/chat/video/${uuidV4()}`); // yeni bir oda oluşturmak için uuid kullanıyoruz
+});
+
 
 router.get('/all', async (req, res) => {
   try {
@@ -26,6 +35,18 @@ router.get('/all', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
+
+router.get('/video/:room',(req,res)=>{
+  const roomId = req.params.room;
+  res.render('pages/room', { title: 'Chat Room',
+    user: req.user, // kullanıcı bilgilerini gönderiyoruz
+    token: req.cookies.token, // token bilgisini gönderiyoruz
+    roomId: roomId // oda kimliğini gönderiyoruz
+   });
+})
+
 
 
 

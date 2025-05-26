@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>WebRTC Görüntü ve Ekran Paylaşımı</title>
+     <link rel="icon" type="image/x-icon" href="/favicon.ico">  
+     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" defer></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #videos, #screenVideos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    video { background-color: #000; }
+    #controls { margin-top: 16px; }
+    button { margin-right: 8px; padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <h2>WebRTC Görüntü ve Ekran Paylaşımı</h2>
+
+  <!-- Yerel kamera önizlemesi -->
+  <video id="localVideo" autoplay muted playsinline style="width:200px; height:150px; background:#222;"></video>
+  <div id="controls">
+    <button id="startScreenShare">Start Screen Share</button>
+    <button id="stopScreenShare" disabled>Stop Screen Share</button>
+  </div>
+
+  <!-- Uzaktaki kameraları ekleyeceğimiz alan -->
+  <div id="videos"></div>
+
+  <!-- Uzaktaki ekran paylaşımlarını ekleyeceğimiz alan -->
+  <div id="screenVideos"></div>
+
+  <!-- Aşağıdaki client.js dosyasını projenize ekleyin -->
+  <script src="/static/js/video.js"></script>
+</body>
+</html>

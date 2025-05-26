@@ -5,13 +5,19 @@ const jwt = require('jsonwebtoken');
 const blacklist = require('../../models/blacklist');
 const auth = require('../../middlewares/authweb');
 
-router.get('/', async (req, res) => {
-    res.render('pages/auth', { 
+router.get('/login', async (req, res) => {
+    res.render('pages/login', { 
       title: 'Login',
       message: null
     });
   });
 
+router.get('/register', async (req, res) => {
+    res.render('pages/register', { 
+      title: 'Register',
+      message: null
+    });
+  });
 
 // @route   POST
 
@@ -82,7 +88,7 @@ router.get('/logout', auth, async (req, res) => {
       sameSite: 'lax'
     });
 
-    res.redirect('/auth');
+    res.redirect('/auth/login');
 
   } catch (err) {
     console.error('Logout error:', err);

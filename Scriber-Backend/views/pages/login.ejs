@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
+  <title>Login / Signup</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -452,8 +451,8 @@ form {
 
 <!-- HEADER -->
 <header class="header">
-  <a href="/" class="logo">
-    <img src="/static/images/header_logo.png" alt="Scriber Logo">
+  <a href="/index.html" class="logo">
+    <img src="/header_logo.png" alt="Scriber Logo">
   </a>
   <nav class="navbar-links">
     <div class="dropdown">
@@ -469,10 +468,10 @@ form {
       </div>
     </div>
     <a href="#download" class="nav-link">Download</a>
-    <a href="/contact" class="nav-link">Contact</a>
+    <a href="/contact.html" class="nav-link">Contact</a>
   </nav>
   <div class="auth-buttons">
-    <a href="/" class="auth-link">Home</a>
+    <a href="/index.html" class="auth-link">Home</a>
   </div>
 </header>
 
@@ -490,68 +489,48 @@ form {
 
     <!-- Giriş Formu -->
     <div class="form-box login">
-        <form action="../Scriber-Loading-Scene/loading.html">
-          <h1>Login</h1>
-          <div class="input-box">
-            <input type="text" placeholder="Username" required>
-            <i class='bx bxs-user'></i>
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="Password" required>
-            <i class='bx bxs-lock-alt'></i>
-          </div>
-          <div class="forgot-link">
-            <a href="#">Forgot password?</a>
-          </div>
-          <button type="submit" class="btn">Login</button>
-          <p>or login with social platforms</p>
-          <div class="social-icons">
-            <a href="#"><i class='bx bxl-google'></i></a>
-            <a href="#"><i class='bx bxl-facebook'></i></a>
-            <a href="#"><i class='bx bxl-github'></i></a>
-            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
-          </div>
-        </form>
-      </div>
+      <form id="loginForm" method="POST" action="/auth/login">
+        <h1>Login</h1>
+        <div class="input-box">
+          <input type="text" id="email" name="email" placeholder="Email" required>
+        </div>
+        <div class="input-box">
+          <input type="password" id="password" name="password" placeholder="Şifrenizi Girin" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <p class="text-center">Don't have an account? <a href="#" id="goToRegister">Signup</a></p>
+      </form>
+    </div>
 
     <!-- Kayıt Formu -->
     <div class="form-box register">
-        <form action="login.html">
-          <h1>Sign up</h1>
-          <div class="input-box">
-            <input type="text" placeholder="Username" required>
-            <i class='bx bxs-user'></i>
-          </div>
-          <div class="input-box">
-            <input type="email" placeholder="Email" required>
-            <i class='bx bxs-envelope'></i>
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="Password" required>
-            <i class='bx bxs-lock-alt'></i>
-          </div>
-          <button type="submit" class="btn">Sign up</button>
-          <p>or signup with social platforms</p>
-          <div class="social-icons">
-            <a href="#"><i class='bx bxl-google'></i></a>
-            <a href="#"><i class='bx bxl-facebook'></i></a>
-            <a href="#"><i class='bx bxl-github'></i></a>
-            <a href="#"><i class='bx bxl-linkedin-square'></i></a>
-          </div>
-        </form>
-      </div>
+      <form id="register-form" action="/auth/register" method="post">
+        <h1>Signup</h1>
+        <div class="input-box">
+          <input type="text" id="username" name="name" placeholder="Kullanıcı Adınızı Girin" required>
+        </div>
+        <div class="input-box">
+          <input type="email" id="emailReg" name="email" placeholder="Email Adresinizi Girin" required>
+        </div>
+        <div class="input-box">
+          <input type="password" id="passwordReg" name="password" placeholder="Şifrenizi Girin" required>
+        </div>
+        <button type="submit" class="btn">Signup</button>
+        <p class="text-center">Already have an account? <a href="#" id="goToLogin">Login</a></p>
+      </form>
+    </div>
 
     <!-- Sağ ve Sol Panel Arka Planı -->
     <div class="toggle-box">
       <div class="toggle-panel toggle-left">
-        <h1>Hello Welcome!</h1>
-        <p>Don't have an account?</p>
-        <button class="btn" id="toggleRegister">Sign up</button>
-      </div>
-      <div class="toggle-panel toggle-right">
-         <h1>Welcome Back!</h1>
+        <h1>Welcome Back!</h1>
         <p>Already have an account?</p>
         <button class="btn" id="toggleLogin">Login</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+        <h1>Hello Welcome!</h1>
+        <p>Don't have an account?</p>
+        <button class="btn" id="toggleRegister">Signup</button>
       </div>
     </div>
   </div>
@@ -567,9 +546,9 @@ form {
   const toggleRegister = document.getElementById("toggleRegister");
   const goToRegister = document.getElementById("goToRegister");
   const goToLogin = document.getElementById("goToLogin");
+
   toggleRegister && toggleRegister.addEventListener("click", () => {
     container.classList.add("active");
-    document.title = "Register";
   });
 
   goToRegister && goToRegister.addEventListener("click", (e) => {
@@ -579,7 +558,6 @@ form {
 
   toggleLogin && toggleLogin.addEventListener("click", () => {
     container.classList.remove("active");
-    document.title= "Login";
   });
 
   goToLogin && goToLogin.addEventListener("click", (e) => {
