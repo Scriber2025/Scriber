@@ -59,6 +59,8 @@ amaçlanmaktadır.
 
 ---
 
+## 🚀 Yazılım Geliştirme Süreci ve Katkı Çağrısı
+
 Bu proje, **çevik yazılım geliştirme (Agile Development)** yöntemi benimsenerek geliştirilmektedir. Proje süresince:
 
 - Kullanıcı ihtiyaçları ve geri bildirimleri doğrultusunda iteratif geliştirme yapıldı,
@@ -76,6 +78,13 @@ Bu açık kaynak proje, sadece bir öğrenci projesi değil; aynı zamanda büy�
 
 > 💡 Katkı sağlamak için GitHub reposunu "Fork"layabilir, "Pull Request" gönderebilir ya da bizimle doğrudan iletişime geçebilirsiniz.
 
+### 📫 İletişim
+Projeye katkı vermek ya da detaylı bilgi almak için bizimle iletişime geçebilirsiniz:  
+📧 **valtuntas@gmail.com**
+
+---
+
+Birlikte daha güçlü bir iletişim platformu inşa edelim!
 
 ---
 
