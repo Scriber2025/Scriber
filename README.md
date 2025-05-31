@@ -59,22 +59,27 @@ amaçlanmaktadır.
 
 ---
 
-## 🧪 Yazılım Geliştirme Süreci
+Bu proje, **çevik yazılım geliştirme (Agile Development)** yöntemi benimsenerek geliştirilmektedir. Proje süresince:
 
-Proje, çevik yazılım geliştirme prensiplerine göre planlandı. Her özellik modüler olarak geliştirildi ve Git versiyon kontrol sistemi ile takip edildi. Takım içi iletişim ve görev dağılımı düzenli toplantılarla sağlandı.
+- Kullanıcı ihtiyaçları ve geri bildirimleri doğrultusunda iteratif geliştirme yapıldı,
+- Modüler yapı ile bağımsız ve sürdürülebilir bileşenler geliştirildi,
+- Git ve GitHub üzerinden versiyon kontrolü ve iş birliği sağlandı,
+- Takım içi görev paylaşımı Trello ve Notion gibi araçlar ile yönetildi.
+
+### 🌍 Global Katkı Çağrısı
+
+Bu açık kaynak proje, sadece bir öğrenci projesi değil; aynı zamanda büyümeye açık, kullanıcı dostu ve sürdürülebilir bir iletişim platformu olma yolundadır.
+
+🧑‍💻 **Geliştiriciler:** Yeni özellikler geliştirmek, hataları düzeltmek ve projeyi büyütmek için katkıda bulunabilirsiniz.  
+💼 **Yatırımcılar:** İletişim teknolojilerine yatırım yapmak isteyenler için açık ve güçlü bir temel sunuyoruz.  
+💰 **Bağışçılar:** Projenin gelişimi için finansal destek sağlayarak açık kaynak dünyasına katkı yapabilirsiniz.
+
+> 💡 Katkı sağlamak için GitHub reposunu "Fork"layabilir, "Pull Request" gönderebilir ya da bizimle doğrudan iletişime geçebilirsiniz.
+
 
 ---
 
-## 🌍 Katkı ve Destek Çağrısı
+Birlikte daha güçlü bir iletişim platformu inşa edelim!
 
-Bu açık kaynak projeye;
-
-- Geliştiricileri yeni özellikler eklemeye,
-- Yatırımcıları projeyi desteklemeye,
-- Bağışçıları gelişimi hızlandırmaya
-
-davet ediyoruz. Projeye katkıda bulunmak için GitHub üzerinden "Fork" ve "Pull Request" gönderebilirsiniz.
-
----
 
 📧 **İletişim:** [scriber.scb@gmail.com](mailto:scriber.scb@gmail.com)
