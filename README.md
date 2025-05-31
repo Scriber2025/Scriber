@@ -78,9 +78,6 @@ Bu açık kaynak proje, sadece bir öğrenci projesi değil; aynı zamanda büy�
 
 > 💡 Katkı sağlamak için GitHub reposunu "Fork"layabilir, "Pull Request" gönderebilir ya da bizimle doğrudan iletişime geçebilirsiniz.
 
-### 📫 İletişim
-Projeye katkı vermek ya da detaylı bilgi almak için bizimle iletişime geçebilirsiniz:  
-📧 **valtuntas@gmail.com**
 
 ---
 
