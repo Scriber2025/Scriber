@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const socket = io('https://tjl8m83g-3001.euw.devtunnels.ms/'); 
+  const socket = io('https://cxqwz8tx-3001.euw.devtunnels.ms/'); 
   const localVideo = document.getElementById('localVideo');
   let localStream = null;
   let screenStream = null;
