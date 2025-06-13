@@ -1,5 +1,134 @@
+document.body.innerHTML = `
+  <style>
+    :root {
+      --turuncu: #f97316;
+      --turuncu-d: #ea580c;
+      --arka: #0e1117;
+      --panel: #1f2937;
+      --kenar: #374151;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--arka);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: var(--panel);
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-bottom: 2px solid var(--kenar);
+    }
+
+    #videoContainer {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #videos, #screenVideos {
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      overflow-y: auto;
+      justify-content: flex-start;
+      align-items: flex-start;
+      background-color: #111827;
+    }
+
+    video {
+      border-radius: 12px;
+      background: black;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      border: 3px solid var(--kenar);
+      transition: transform 0.2s;
+    }
+
+    /* Sol üstteki kendi videon özel */
+    #localVideo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 200px !important;
+      height: 150px !important;
+      border: 3px solid var(--turuncu-d);
+      z-index: 10;
+    }
+
+    /* Ekran paylaşımı videoları daha geniş ve stilize */
+    #screenVideos video {
+      width: 100%;
+      max-height: 80vh;
+      border: 4px dashed var(--turuncu);
+      border-radius: 14px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: var(--panel);
+      border-top: 2px solid var(--kenar);
+    }
+
+    .controls button {
+      padding: 10px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      background-color: var(--turuncu);
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .controls button:hover {
+      background-color: var(--turuncu-d);
+    }
+
+    @media (max-width: 768px) {
+      #videos, #screenVideos {
+        flex-direction: column;
+        align-items: center;
+      }
+      #localVideo {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 10px auto;
+      }
+    }
+  </style>
+
+  <header>Görüntülü Görüşme ve Ekran Paylaşımı</header>
+
+  <div id="videoContainer">
+    <div id="videos">
+      <video id="localVideo" autoplay muted playsinline></video>
+    </div>
+    <div id="screenVideos"></div>
+  </div>
+
+  <div class="controls">
+    <button id="startScreenShare">Ekran Paylaşımını Başlat</button>
+    <button id="stopScreenShare" disabled>Ekran Paylaşımını Durdur</button>
+  </div>
+`;
+
+
 document.addEventListener('DOMContentLoaded', () => {
-  const socket = io('https://cxqwz8tx-3001.euw.devtunnels.ms/'); 
+  const socket = io('https://rk39wv2b-3001.use2.devtunnels.ms/');
   const localVideo = document.getElementById('localVideo');
   let localStream = null;
   let screenStream = null;
@@ -296,7 +425,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
- 
   const startBtn = document.getElementById('startScreenShare');
   const stopBtn = document.getElementById('stopScreenShare');
   startBtn.onclick = async () => {
