@@ -15,7 +15,7 @@ const cookieParser = require('cookie-parser');
 const io = socketIo(server, {
   cors: {
      origin: [
-      "https://tjl8m83g-3000.euw.devtunnels.ms",
+      "https://scriber-backend.onrender.com",
       "https://tjl8m83g-3001.euw.devtunnels.ms",
     ],
     methods: ["GET", "POST"],
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
       usersInRoom[roomId] = usersInRoom[roomId].filter(id => id !== userId);
       console.log("roomId:", roomId);
       try{
-        const user_leaved = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/chat/video/user-leaved", {
+        const user_leaved = await axios.post("https://scriber-backend.onrender.com/chat/video/user-leaved", {
           roomId,
           userId
         });
@@ -160,7 +160,7 @@ io.on('connection', (socket) => {
           contentType: mimetype || 'application/octet-stream'
         });
       }
-      const sendMessage = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/message/p2p", form, {
+      const sendMessage = await axios.post("https://scriber-backend.onrender.com/message/p2p", form, {
         headers: {
           ...form.getHeaders(),
           Cookie: `token=${token}`
@@ -189,7 +189,7 @@ io.on('connection', (socket) => {
           contentType: mimetype || 'application/octet-stream'
         });
       }
-      const sendMessage = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/message/group", form, {
+      const sendMessage = await axios.post("https://scriber-backend.onrender.com/message/group", form, {
         headers: {
           ...form.getHeaders(),
           Cookie: `token=${token}`
@@ -207,7 +207,7 @@ io.on('connection', (socket) => {
   socket.on("get-messages", async ({ chatId }) => {
     try {
       const token = socket.token;
-      const messages = await axios.get(`https://tjl8m83g-3000.euw.devtunnels.ms/message/${chatId}`, {
+      const messages = await axios.get(`https://scriber-backend.onrender.com/message/${chatId}`, {
         headers: { Cookie: `token=${token}` }
       });
       if (messages.status === 200) {
@@ -224,7 +224,7 @@ io.on('connection', (socket) => {
     try {
       const token = socket.token;
       //console.log("token", token);
-      const { data } = await axios.get("https://tjl8m83g-3000.euw.devtunnels.ms/chat/all", {
+      const { data } = await axios.get("https://scriber-backend.onrender.com/chat/all", {
         headers: { Cookie: `token=${token}` }
       });
       socket.emit("receive-chat-list", data);
@@ -236,7 +236,7 @@ io.on('connection', (socket) => {
   socket.on('get-profile', async () => {
     try {
       const token = socket.token;
-      const { data } = await axios.get("https://tjl8m83g-3000.euw.devtunnels.ms/user/profile", {
+      const { data } = await axios.get("https://scriber-backend.onrender.com/user/profile", {
         headers: { Cookie: `token=${token}` }
       });
       socket.emit("receive-profile", data);
@@ -249,7 +249,7 @@ io.on('connection', (socket) => {
     try {
       const token = socket.token;
       console.log("token", token);
-      const { data } = await axios.get(`https://tjl8m83g-3000.euw.devtunnels.ms/user/users/p2p`, {
+      const { data } = await axios.get(`https://scriber-backend.onrender.com/user/users/p2p`, {
         headers: { Cookie: `token=${token}` }
       });
       console.log("userlar getirildi", data);
@@ -262,7 +262,7 @@ io.on('connection', (socket) => {
   socket.on('get-users-group', async () => {
     try {
       const token = socket.token;
-      const { data } = await axios.get(`https://tjl8m83g-3000.euw.devtunnels.ms/user/users/group`, {
+      const { data } = await axios.get(`https://scriber-backend.onrender.com/user/users/group`, {
         headers: { Cookie: `token=${token}` }
       });
       console.log("userlar getirildi", data);
@@ -283,7 +283,7 @@ io.on('connection', (socket) => {
           filename: originalname || 'upload.png',
           contentType: mimetype || 'application/octet-stream'
         });
-        const response = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/chat/group", form, {
+        const response = await axios.post("https://scriber-backend.onrender.com/chat/group", form, {
           headers: {
             ...form.getHeaders(),
             Cookie: `token=${token}`
