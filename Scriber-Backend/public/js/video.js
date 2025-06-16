@@ -136,7 +136,7 @@ function getCookie(name) {
 const token = localStorage.getItem("token") || getCookie("token");
 console.log("Token:", token);
 document.addEventListener('DOMContentLoaded', () => {
-  const socket = io('https://tjl8m83g-3001.euw.devtunnels.ms/',{
+  const socket = io('https://scriber-backend-socket.onrender.com/',{
     withCredentials: true,
     auth: {
          token

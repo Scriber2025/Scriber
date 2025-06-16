@@ -536,7 +536,7 @@ color: #fff;
 </head>
 <body>
   <div class="profile-menu">
-    <img src="https://tjl8m83g-3000.euw.devtunnels.ms/file/user/picture" alt="Profil" class="profile-avatar" id="profile-avatar"/>
+    <img src="https://scriber-backend.onrender.com/file/user/picture" alt="Profil" class="profile-avatar" id="profile-avatar"/>
     <div class="profile-dropdown">
       <ul>
         <li><a href="/profile">Profilim</a></li>
@@ -763,7 +763,7 @@ color: #fff;
 }
 const token = localStorage.getItem("token") || getCookie("token");
 console.log("Token:", token);
-     const socket = io('https://tjl8m83g-3001.euw.devtunnels.ms/', {
+     const socket = io('https://scriber-backend-socket.onrender.com/', {
         transports: ['websocket'],
         withCredentials: true,
         auth: {
@@ -771,7 +771,7 @@ console.log("Token:", token);
         }
       }); // Sunucuya bağlan :contentReference[oaicite:4]{index=4}
       
-    const BaseFileUrl = 'https://tjl8m83g-3000.euw.devtunnels.ms/file/'
+    const BaseFileUrl = 'https://scriber-backend.onrender.com/file/'
     const sendBtn  = document.querySelector('.chat-input button');
     const messageInput  = document.getElementById('messageInput');
     const chatListEl    = document.getElementById('chatListContainer');
@@ -1329,7 +1329,7 @@ addUserList.onclick = e => {
       email.textContent = s.email;
       password.textContent = '••••••••';
       about.textContent = s.about || 'Hakkımda bilgisi yok';
-      avatar.src = `http://localhost:3000/file/user/picture`;
+      avatar.src = `https://scriber-backend.onrender.com/file/user/picture`;
     
     document.getElementById('profileModal').style.display = 'flex';
     });
@@ -1391,7 +1391,7 @@ addUserList.onclick = e => {
       const formData = new FormData();
       formData.append('files', file);
 
-      fetch('http://localhost:3000/file/user/picture', {
+      fetch('https://scriber-backend.onrender.com/file/user/picture', {
         method: 'PUT',
         credentials: 'include',
         body: formData
@@ -1402,9 +1402,9 @@ addUserList.onclick = e => {
       })
       .then(data => {
         // yeni resmi DOM'a uygula
-        el.src = 'http://localhost:3000/file/user/picture';    // server'dan dönen yeni URL
+        el.src = 'https://scriber-backend.onrender.com/file/user/picture';    // server'dan dönen yeni URL
         const pa = document.getElementById('profile-avatar');
-        pa.src = 'http://localhost:3000/file/user/picture';    // server'dan dönen yeni URL
+        pa.src = 'https://scriber-backend.onrender.com/file/user/picture';    // server'dan dönen yeni URL
         cleanup();
       })
       .catch(err => {
@@ -1444,7 +1444,7 @@ addUserList.onclick = e => {
 
   saveIcon.onclick = () => {
     const propKey = fieldId.replace('profile-',''); // "profile-name"->"name"
-    fetch('http://localhost:3000/user/profile', { method: 'PUT', headers: {
+    fetch('https://scriber-backend.onrender.com/user/profile', { method: 'PUT', headers: {
   'Content-Type': 'application/json' // <<< bunu ekle
 },  credentials: 'include', body: JSON.stringify({ [fieldId]: input.value }) }).then(r=>r.json())
     .then(data => {

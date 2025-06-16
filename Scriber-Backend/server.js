@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: [
-      "https://tjl8m83g-3000.euw.devtunnels.ms",
+      "https://scriber-backend.onrender.com",
       "https://tjl8m83g-3001.euw.devtunnels.ms",
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
