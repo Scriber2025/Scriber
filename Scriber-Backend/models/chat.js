@@ -49,6 +49,10 @@ const chatSchema = new mongoose.Schema({
     ref: 'User',
     // sadece group chat’lerde geçerli
   },
+  uuidV4:{
+    type: String,
+    unique: true, // Her sohbet için benzersiz UUID
+  }
 }, {
   timestamps: true,
 });

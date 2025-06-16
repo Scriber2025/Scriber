@@ -1,4 +1,5 @@
-document.body.innerHTML = `
+
+    document.body.innerHTML = `
   <style>
     :root {
       --turuncu: #f97316;
@@ -126,13 +127,27 @@ document.body.innerHTML = `
   </div>
 `;
 
-
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+const token = localStorage.getItem("token") || getCookie("token");
+console.log("Token:", token);
 document.addEventListener('DOMContentLoaded', () => {
-  const socket = io('https://rk39wv2b-3001.use2.devtunnels.ms/');
+  const socket = io('https://tjl8m83g-3001.euw.devtunnels.ms/',{
+    withCredentials: true,
+    auth: {
+         token
+        }
+  });
   const localVideo = document.getElementById('localVideo');
   let localStream = null;
   let screenStream = null;
   let isSharingScreen = false;
+  const room = document.location.pathname.split('/').pop(); // URL'den oda kimliğini al
+  console.log(`[Client] Oda kimliği: ${room}`);
   const peerConnections = {};
   const config = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
 
@@ -141,9 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(stream => {
       localStream = stream;
       localVideo.srcObject = stream; 
-
-      const myUserId = Date.now();
-      socket.emit('join-room', { roomId: 'chat', userId: myUserId });
+      socket.emit('join-room', { roomId: room, userId: userID ,chatId });
 
       socket.on('all-users', ({ users, screenSharer }) => {
  
@@ -438,3 +451,5 @@ document.addEventListener('DOMContentLoaded', () => {
     stopBtn.disabled = true;
   };
 });
+
+  

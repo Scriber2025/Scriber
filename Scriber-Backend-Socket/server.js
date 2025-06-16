@@ -14,7 +14,10 @@ const cookieParser = require('cookie-parser');
 
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+     origin: [
+      "https://tjl8m83g-3000.euw.devtunnels.ms",
+      "https://tjl8m83g-3001.euw.devtunnels.ms",
+    ],
     methods: ["GET", "POST"],
     credentials: true
   },
@@ -23,10 +26,21 @@ const io = socketIo(server, {
 
 app.use(cookieParser());
 
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (!token) {
+    return next(new Error("Token yok"));
+  }
+  //console.log("Socket token:", token);
+  socket.token = token;
+  next();
+});
+
+
 const usersInRoom = {};        // { roomId: [ userId, userId, ... ] }
 const userSocketMap = {};      // { userId: socket.id }
 const roomsScreenSharing = {}; // { roomId: sharingUserId }
-
+const userTokenMap = {}; // { userId: token }
 io.on('connection', (socket) => {
 
   function getTokensFromCookie(req) {
@@ -39,171 +53,15 @@ io.on('connection', (socket) => {
     return token;
   }
 
-  // ───────────────────────────────────────────────────────────
-  // 1) send-message-p2p, send-message-group, get-messages vb. event’ler
-  //    (Sizin kodunuza birebir kopyalayabilirsiniz)
-  // ───────────────────────────────────────────────────────────
 
-  socket.on('send-message-p2p', async ({ userId, content, originalname, mimetype, chatId }, buffer, ack) => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const form = new formData();
-      form.append('userId', userId);
-      form.append('content', content);
-      form.append('messageType', mimetype ? mimetype.split('/')[0] : 'text');
-      if (mimetype) {
-        form.append('files', buffer, {
-          filename: originalname || 'upload.png',
-          contentType: mimetype || 'application/octet-stream'
-        });
-      }
-      const sendMessage = await axios.post("http://127.0.0.1:3000/message/p2p", form, {
-        headers: {
-          ...form.getHeaders(),
-          Cookie: `token=${token}`
-        }
-      });
-      if (sendMessage.status === 200) {
-        socket.to(chatId).emit("receive-message", sendMessage.data);
-        if (typeof ack === 'function') ack(sendMessage.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on('send-message-group', async ({ chatId, content, originalname, mimetype }, buffer, ack) => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const form = new formData();
-      form.append('chatId', chatId);
-      form.append('content', content);
-      form.append('messageType', mimetype ? mimetype.split('/')[0] : 'text');
-      if (mimetype) {
-        form.append('files', buffer, {
-          filename: originalname || 'upload.png',
-          contentType: mimetype || 'application/octet-stream'
-        });
-      }
-      const sendMessage = await axios.post("http://127.0.0.1:3000/message/group", form, {
-        headers: {
-          ...form.getHeaders(),
-          Cookie: `token=${token}`
-        }
-      });
-      if (sendMessage.status === 200) {
-        socket.to(chatId).emit("receive-message", sendMessage.data);
-        if (typeof ack === 'function') ack(sendMessage.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on("get-messages", async ({ chatId }) => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const messages = await axios.get(`http://localhost:3000/message/${chatId}`, {
-        headers: { Cookie: `token=${token}` }
-      });
-      if (messages.status === 200) {
-        socket.emit("receive-messages", { messages: messages.data });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on('join-user', async ({ userId }) => {
-    socket.join(userId);
-    console.log(`Socket2 ${socket.id} joined room ${userId}`);
-  });
-
-  socket.on('get-chat-list', async () => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const { data } = await axios.get("http://localhost:3000/chat/all", {
-        headers: { Cookie: `token=${token}` }
-      });
-      socket.emit("receive-chat-list", data);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on('get-profile', async () => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const { data } = await axios.get("http://localhost:3000/user/profile", {
-        headers: { Cookie: `token=${token}` }
-      });
-      socket.emit("receive-profile", data);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on('get-users', async () => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const { data } = await axios.get(`http://localhost:3000/user/users/p2p`, {
-        headers: { Cookie: `token=${token}` }
-      });
-      console.log("userlar getirildi", data);
-      socket.emit("receive-users", data);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on('get-users-group', async () => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      const { data } = await axios.get(`http://localhost:3000/user/users/group`, {
-        headers: { Cookie: `token=${token}` }
-      });
-      console.log("userlar getirildi", data);
-      socket.emit("receive-users-group", data);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  socket.on('create-chat', async ({ isGroupChat, chatName, participants, originalname, mimetype }, buffer) => {
-    try {
-      const token = getTokensFromCookie(socket.request);
-      if (isGroupChat) {
-        const form = new formData();
-        form.append('chatName', chatName);
-        form.append('users', JSON.stringify(participants));
-        form.append('files', buffer, {
-          filename: originalname || 'upload.png',
-          contentType: mimetype || 'application/octet-stream'
-        });
-        const response = await axios.post("http://localhost:3000/chat/group", form, {
-          headers: {
-            ...form.getHeaders(),
-            Cookie: `token=${token}`
-          }
-        });
-        socket.emit("receive-chat", response.data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
-  // ───────────────────────────────────────────────────────────
-  // 8) “join-room” (WebRTC Video & Ekran Paylaşımı için)
-  socket.on('join-room', ({ roomId, userId }) => {
+  socket.on('join-room',async ({ roomId, userId ,chatId }) => {
     socket.join(roomId);
     socket.userId = userId;
+    console.log("odaya girildi.")
     userSocketMap[userId] = socket.id;
-
     if (!usersInRoom[roomId]) usersInRoom[roomId] = [];
     usersInRoom[roomId].push(userId);
     console.log(`[Server] Room ${roomId} içindekiler:`, usersInRoom[roomId]);
-
     // Yeni katılan kullanıcıya diğer kullanıcıları gönder
     const otherUsers = usersInRoom[roomId].filter(id => id !== userId);
     const screenSharer = roomsScreenSharing[roomId] || null;
@@ -211,12 +69,24 @@ io.on('connection', (socket) => {
     
     //socket.to(roomId).emit('new-user', { userId }); // diğerlerine bildir
     // Odadan ayrılınca Temizleme
-    socket.on('disconnect', () => {
+    socket.on('disconnect',async () => {
+      socket.to(chatId).emit('disconnected-call-notification',{chatId});
       if (roomsScreenSharing[roomId] === userId) {
         delete roomsScreenSharing[roomId];
         socket.to(roomId).emit('screen-share-stopped', { userId });
       }
       usersInRoom[roomId] = usersInRoom[roomId].filter(id => id !== userId);
+      console.log("roomId:", roomId);
+      try{
+        const user_leaved = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/chat/video/user-leaved", {
+          roomId,
+          userId
+        });
+
+
+      }catch(err){
+        console.error("Error while removing user from room:", err);
+      }
       socket.to(roomId).emit('user-disconnected', userId);
     });
 
@@ -265,6 +135,172 @@ io.on('connection', (socket) => {
       }
     });
   });
+
+  socket.on('join-chat', async ({ currentRoomId }) => {
+    socket.join(currentRoomId);
+    console.log(`Socket2 ${socket.id} joined room ${currentRoomId}`);
+    
+  });
+  // ───────────────────────────────────────────────────────────
+  // 1) send-message-p2p, send-message-group, get-messages vb. event’ler
+  //    (Sizin kodunuza birebir kopyalayabilirsiniz)
+  // ───────────────────────────────────────────────────────────
+
+
+  socket.on('send-message-p2p', async ({ userId, content, originalname, mimetype, chatId }, buffer, ack) => {
+    try {
+      const token = socket.token;
+      const form = new formData();
+      form.append('userId', userId);
+      form.append('content', content);
+      form.append('messageType', mimetype ? mimetype.split('/')[0] : 'text');
+      if (mimetype) {
+        form.append('files', buffer, {
+          filename: originalname || 'upload.png',
+          contentType: mimetype || 'application/octet-stream'
+        });
+      }
+      const sendMessage = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/message/p2p", form, {
+        headers: {
+          ...form.getHeaders(),
+          Cookie: `token=${token}`
+        }
+      });
+      if (sendMessage.status === 200) {
+        
+        socket.to(chatId).emit("receive-message", sendMessage.data);
+        if (typeof ack === 'function') ack(sendMessage.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on('send-message-group', async ({ chatId, content, originalname, mimetype }, buffer, ack) => {
+    try {
+      const token = socket.token;
+      const form = new formData();
+      form.append('chatId', chatId);
+      form.append('content', content);
+      form.append('messageType', mimetype ? mimetype.split('/')[0] : 'text');
+      if (mimetype) {
+        form.append('files', buffer, {
+          filename: originalname || 'upload.png',
+          contentType: mimetype || 'application/octet-stream'
+        });
+      }
+      const sendMessage = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/message/group", form, {
+        headers: {
+          ...form.getHeaders(),
+          Cookie: `token=${token}`
+        }
+      });
+      if (sendMessage.status === 200) {
+        socket.to(chatId).emit("receive-message", sendMessage.data);
+        if (typeof ack === 'function') ack(sendMessage.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on("get-messages", async ({ chatId }) => {
+    try {
+      const token = socket.token;
+      const messages = await axios.get(`https://tjl8m83g-3000.euw.devtunnels.ms/message/${chatId}`, {
+        headers: { Cookie: `token=${token}` }
+      });
+      if (messages.status === 200) {
+        socket.emit("receive-messages", { messages: messages.data });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+
+
+  socket.on('get-chat-list', async () => {
+    try {
+      const token = socket.token;
+      //console.log("token", token);
+      const { data } = await axios.get("https://tjl8m83g-3000.euw.devtunnels.ms/chat/all", {
+        headers: { Cookie: `token=${token}` }
+      });
+      socket.emit("receive-chat-list", data);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on('get-profile', async () => {
+    try {
+      const token = socket.token;
+      const { data } = await axios.get("https://tjl8m83g-3000.euw.devtunnels.ms/user/profile", {
+        headers: { Cookie: `token=${token}` }
+      });
+      socket.emit("receive-profile", data);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on('get-users', async () => {
+    try {
+      const token = socket.token;
+      console.log("token", token);
+      const { data } = await axios.get(`https://tjl8m83g-3000.euw.devtunnels.ms/user/users/p2p`, {
+        headers: { Cookie: `token=${token}` }
+      });
+      console.log("userlar getirildi", data);
+      socket.emit("receive-users", data);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on('get-users-group', async () => {
+    try {
+      const token = socket.token;
+      const { data } = await axios.get(`https://tjl8m83g-3000.euw.devtunnels.ms/user/users/group`, {
+        headers: { Cookie: `token=${token}` }
+      });
+      console.log("userlar getirildi", data);
+      socket.emit("receive-users-group", data);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on('create-chat', async ({ isGroupChat, chatName, participants, originalname, mimetype }, buffer) => {
+    try {
+      const token = socket.token;
+      if (isGroupChat) {
+        const form = new formData();
+        form.append('chatName', chatName);
+        form.append('users', JSON.stringify(participants));
+        form.append('files', buffer, {
+          filename: originalname || 'upload.png',
+          contentType: mimetype || 'application/octet-stream'
+        });
+        const response = await axios.post("https://tjl8m83g-3000.euw.devtunnels.ms/chat/group", form, {
+          headers: {
+            ...form.getHeaders(),
+            Cookie: `token=${token}`
+          }
+        });
+        socket.emit("receive-chat", response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  socket.on('start-call-notification',async ({room}) => {
+     socket.to(room).emit('receive-start-call-notification',room);
+  })
+  // ───────────────────────────────────────────────────────────
+  // 8) “join-room” (WebRTC Video & Ekran Paylaşımı için)
 
   // ───────────────────────────────────────────────────────────
   // 11) Genel “disconnect” Event’i

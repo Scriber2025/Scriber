@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     body, html {
       height: 100%;
@@ -519,11 +519,24 @@ color: #fff;
   font-size: 1.2rem;
   padding: 8px;
 }
+
+
+/* telefon simgesi animasyon */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.icon-animate {
+  animation: pulse 1s infinite;
+  color: red;
+}
   </style>
 </head>
 <body>
   <div class="profile-menu">
-    <img src="http://localhost:3000/file/user/picture" alt="Profil" class="profile-avatar" id="profile-avatar"/>
+    <img src="https://tjl8m83g-3000.euw.devtunnels.ms/file/user/picture" alt="Profil" class="profile-avatar" id="profile-avatar"/>
     <div class="profile-dropdown">
       <ul>
         <li><a href="/profile">Profilim</a></li>
@@ -616,7 +629,7 @@ color: #fff;
           <img src="/static/images/profile.jpg" alt="Profil Fotoğrafı" id="toprofile_img" class="avatar" />
           <div class="profile-name" id="toprofilename" style="margin-left: 10px;">Kullanıcı Adı</div>
            </div>
-          <button class="call-button" id="call-button" >
+          <button class="call-button" id="call-button"  data-bs-toggle="popover" data-bs-placement="bottom" title="Arama Bilgisi" data-bs-content="Görüntülü konuşma başlatmak için tıklayın!">
             <!-- Arama ikonu -->
         <i class="bi bi-telephone-fill" style="font-size: 23px;"></i>
       </button>
@@ -742,11 +755,23 @@ color: #fff;
   <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
   <script src="/static/js/auth.js"></script>
   <script>
+ function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+const token = localStorage.getItem("token") || getCookie("token");
+console.log("Token:", token);
      const socket = io('https://tjl8m83g-3001.euw.devtunnels.ms/', {
         transports: ['websocket'],
         withCredentials: true,
+        auth: {
+         token
+        }
       }); // Sunucuya bağlan :contentReference[oaicite:4]{index=4}
-    const BaseFileUrl = 'http://127.0.0.1:3000/file/'
+      
+    const BaseFileUrl = 'https://tjl8m83g-3000.euw.devtunnels.ms/file/'
     const sendBtn  = document.querySelector('.chat-input button');
     const messageInput  = document.getElementById('messageInput');
     const chatListEl    = document.getElementById('chatListContainer');
@@ -755,8 +780,10 @@ color: #fff;
       const profileNameEl = document.getElementById('toprofilename');
       const profileImgEl  = document.getElementById('toprofile_img');
       const callButton = document.getElementById('call-button');
+      const callButtonIcon = callButton.querySelector('i'); 
       const profileAvatarEl = document.getElementById('profile-avatar');
       const fileNameDisplay = document.getElementById('fileNameDisplay');
+  
      // 1. “+Yeni kişi” menü öğesini yakala
     const addUserTrigger = document.querySelector('#popupMenu li[data-action="add-user"]');
     const addUserModal   = document.getElementById('addUserModal');
@@ -770,13 +797,82 @@ color: #fff;
       const username ="<%=user.username%>" // Token'dan kullanıcı adını al 
       
       
+      
       const token = localStorage.getItem('token');
       callButton.onclick = () => {
         if (!currentRoomId) alert('Lütfen önce bir sohbete katılın!');
         else {
-          window.location.href = '/chat/video/create'
+          socket.emit('start-call-notification',{room:currentRoomId})
+          window.location.href = '/chat/video/create?chatId='+currentRoomId
         }
       };
+
+
+
+     socket.on('receive-start-call-notification', ( room ) => {
+      console.log("çalıştı")
+  const chatItem = document.querySelector(`li[data-chat-id="${room}"]`);
+  console.log("chatItem",chatItem)
+  if (!chatItem) return;
+
+  const iconEl = chatItem.querySelector('.icon-animate, .bi-telephone-fill');
+  const infoBox = chatItem.querySelector('.chat-info');
+
+  if (iconEl) {
+    iconEl.className = 'bi bi-people-fill icon-animate';
+  }
+
+  const callBtn = chatItem.querySelector('[data-bs-content]');
+  if (callBtn) {
+    callBtn.setAttribute('data-bs-content', 'Görüntülü konuşmaya katılın!');
+  }
+
+  // Alternatif olarak, sayfa profil alanındaysa ve o oda aktifse anlık güncelle:
+  if (room === currentRoomId) {
+    callButtonIcon.className = 'bi bi-people-fill icon-animate';
+    callButton.setAttribute('data-bs-content', 'Görüntülü konuşmaya katılın!');
+
+    // Tooltip'i yeniden initialize et (gerekirse)
+    bootstrap.Popover.getInstance(callButton)?.dispose();
+    new bootstrap.Popover(callButton, {
+      trigger: 'hover',
+      placement: 'bottom'
+    });
+  }
+});
+
+     socket.on('disconnected-call-notification' , ({chatId}) => {
+        console.log("çalıştı2", chatId)
+        const chatItem = document.querySelector(`li[data-chat-id="${chatId}"]`);
+        if (!chatItem) return;
+
+        const iconEl = chatItem.querySelector('.icon-animate, .bi-people-fill');
+        if (iconEl) {
+          iconEl.className = 'bi bi-telephone-fill';
+        }
+
+        const callBtn = chatItem.querySelector('[data-bs-content]');
+        if (callBtn) {
+          callBtn.setAttribute('data-bs-content', 'Görüntülü konuşma başlatmak için tıklayın!');
+        }
+
+        // Profil alanındaysa ve o oda aktifse anlık güncelle:
+        if (chatId === currentRoomId) {
+          callButtonIcon.className = 'bi bi-telephone-fill';
+          callButton.setAttribute('data-bs-content', 'Görüntülü konuşma başlatmak için tıklayın!');
+
+          // Tooltip'i yeniden initialize et (gerekirse)
+          bootstrap.Popover.getInstance(callButton)?.dispose();
+          new bootstrap.Popover(callButton, {
+            trigger: 'hover',
+            placement: 'bottom'
+          });
+        }
+      });
+
+
+
+
 
       sendBtn.addEventListener('click', () => {
         if (!currentRoomId) return;
@@ -793,9 +889,9 @@ color: #fff;
       fileInput.addEventListener('change', e => {
         selectedFile = e.target.files[0] || null;
       }); 
-
+      
       // 1) Kullanıcı girişi yapıldığında kendine özel odaya katıl
-      socket.emit('join-user', { userId }); 
+     
       // Bu sayede sunucu senin user_<> odana emit yapabilir :contentReference[oaicite:5]{index=5}
       
       // 2) Sohbet listesini getir
@@ -804,7 +900,7 @@ color: #fff;
       socket.on('receive-chat-list', (chats) => {
         chatListEl.innerHTML = '';
         chats.forEach(c => {
-          
+            socket.emit('join-chat', { currentRoomId:c._id });
             // Debugging için
           const li = document.createElement('li');
           li.dataset.chatId = c._id;    
@@ -829,7 +925,13 @@ color: #fff;
 
             profileImgEl.src = c.isGroupChat ? (c.chatImage ? `${BaseFileUrl}chat?url=${c.chatImage}` : '/static/images/profile.jpg') : (c.participants[0].user._id !== userId ? `${BaseFileUrl}user?url=${c.participants[0].user.avatar}` : `${BaseFileUrl}user?url=${c.participants[1].user.avatar}`);
 
-            
+            callButtonIcon.className = c.uuidV4 ? 'bi bi-people-fill icon-animate' : 'bi bi-telephone-fill ';
+            bootstrap.Popover.getInstance(callButton)?.dispose();
+            callButton.setAttribute('data-bs-content', c.uuidV4 ? 'Görüntülü konuşmaya katılın!':'Görüntülü konuşma başlatmak için tıklayın!');
+            var popover = new bootstrap.Popover(callButton,{ 
+            trigger: 'hover', // hover veya focus ile açılır
+            placement: 'bottom' // popover konumu
+            });
            /* sendBtn.onclick = () => {
               if (!currentRoomId) return;
               console.log("tetiklendi2")
@@ -865,9 +967,10 @@ color: #fff;
         appendMessage(m);
         const chatItem = document
     .querySelector('#chatListContainer')
-    .querySelector(`li[data-chat-id="${m.chatId}"]`);
+    .querySelector(`li[data-chat-id="${m.chat._id}"]`);
 
   if (chatItem) {
+   
     // 2) .last-message div’ini güncelle
     const lastMsgEl = chatItem.querySelector('.last-message');
     lastMsgEl.textContent = m.content;
@@ -884,7 +987,7 @@ color: #fff;
         if (!currentRoomId) return;
         // File upload desteği eklemek istersen:
         console.log( receiverId, content,currentRoomId ,selectedFile)
-        console.log("type:",selectedFile?.type)
+        //console.log("type:",selectedFile?.type)
         if(!isGroup) {
           socket.emit('send-message-p2p', { userId:receiverId, content, originalname: selectedFile?.name, mimetype: selectedFile?.type,chatId:currentRoomId },selectedFile?selectedFile:undefined,(cb) => {
             if(cb){
@@ -950,7 +1053,7 @@ color: #fff;
       
       }
 
-    
+      
      
 
       // Mesajı DOM’a ekleyen yardımcı fonksiyon

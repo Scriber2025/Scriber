@@ -13,7 +13,10 @@ app.use(cookieParser());
 
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: [
+      "https://tjl8m83g-3000.euw.devtunnels.ms",
+      "https://tjl8m83g-3001.euw.devtunnels.ms",
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,      
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -32,7 +35,10 @@ app.use(express.static(path.join(__dirname, 'Scriber-Website')));
 const webRouter = require('./routes/web');
 const apiRouter = require('./routes/api');
 app.get('/favicon.ico', (req, res) => res.status(204));
-
+app.get('/test', (req, res) => {
+  console.log('cookies:', req.cookies); // burada token görünmeli
+  res.send('ok');
+});
 app.use('/api', apiRouter);
 app.use('/', webRouter);
 

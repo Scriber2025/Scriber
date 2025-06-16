@@ -29,15 +29,14 @@ router.post('/register', async (req, res) => {
   
       user = new users({ name, email, password });
       await user.save();
-  
+      console.log(process.env.JWT_SECRET);
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
       if (req.accepts('html')) {
         return res
           .cookie('token', token, {
-            httpOnly:true,
-            secure: true,
-            sameSite: 'none',
-            path: '/', 
+            httpOnly:false,
+            secure: false,
+            sameSite: 'lax',
             maxAge: 15 * 60 * 1000
           }).redirect('/chat');
 
@@ -61,9 +60,9 @@ router.post('/login', async (req, res) => {
       if (req.accepts('html')) {
         return res
           .cookie('token', token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'lax',
+            httpOnly: false,
+            secure: true,
+            sameSite: 'None',
             path: '/', 
             maxAge: 15 * 60 * 1000
           }).redirect('/chat');
