@@ -1,0 +1,141 @@
+/* GENEL STIL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(90deg, #e2e2e2, #ff9b2d);
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* HEADER sabit yukarıda kalır */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #ff7200;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ORTALANACAK ANA İÇERİK */
+.page-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+}
+
+
+.logo img {
+  height: 40px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* İLETİŞİM SAYFASI */
+.contact-section {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  padding: 60px 50px;
+  max-width: 1000px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+}
+
+.contact-left, .contact-right {
+  width: 48%;
+}
+
+.contact-left h2, .contact-right h2 {
+  color:  #ff7200;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.contact-form textarea {
+  min-height: 150px;
+}
+
+.contact-form button {
+  width: 100%;
+  padding: 12px;
+  background-color:  #ff7200;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background-color: #ff7200;
+}
+
+.contact-right p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.contact-right a {
+  color:  #ff7200;
+  text-decoration: none;
+}
+
+.contact-right a:hover {
+  text-decoration: underline;
+}
+
+/* İLETİŞİM PARAGRAF STİLİ */
+.contact-info-paragraph {
+  margin-top: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+}
+
+.contact-info-paragraph a {
+  color:  #ff7200;
+  text-decoration: none;
+}
+
+.contact-info-paragraph a:hover {
+  text-decoration: underline;
+}
